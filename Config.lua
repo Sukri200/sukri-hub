@@ -1,12 +1,12 @@
 -- ==================================================
--- YOKUDO HUB | NEW PROJECT | Config
+-- SUKRI HUB | NEW PROJECT | Config
 -- ==================================================
 
 _G.YOKUDO = {
     -- Hub Info
-    Name = "YOKUDO HUB | Steal An Egg",
-    Version = "telegram : @maibigber",
-    Author = "Yokudo",
+    Name = "SUKRI HUB | Steal An Egg",
+    Version = "telegram : ",
+    Author = "Sukri",
 
     -- Asset
     AssetID = "rbxassetid://101352576986760",
