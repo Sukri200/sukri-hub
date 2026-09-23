@@ -1,5 +1,5 @@
 -- ==================================================
--- YOKUDO HUB | NEW PROJECT | UI
+-- SUKRI HUB | UI
 -- ==================================================
 
 local Services = {
@@ -11,8 +11,12 @@ local Services = {
     ContentProvider = game:GetService("ContentProvider"),
 }
 
-local Settings = _G.YOKUDO
-local Theme = Settings.UI.Theme
+-- Mengambil setting ukuran bawaan jika ada, atau menggunakan default
+local Settings = _G.YOKUDO or {}
+local UI_Settings = Settings.UI or {}
+local UIWidth = UI_Settings.Width or 550
+local UIHeight = UI_Settings.Height or 350
+local SidebarWidth = UI_Settings.SidebarWidth or 130
 
 -- ==================================================
 -- GUI PARENT (gethui if available)
@@ -28,17 +32,17 @@ end)
 
 -- Clean old instances
 pcall(function()
-    local Old = GuiParent:FindFirstChild("YOKUDO_HUB")
+    local Old = GuiParent:FindFirstChild("SUKRI_HUB")
     if Old then Old:Destroy() end
     local OldToggle = GuiParent:FindFirstChild("ToggleGUI")
     if OldToggle then OldToggle:Destroy() end
 end)
 
 -- ==================================================
--- TOGGLE (Y icon)
+-- TOGGLE (Bulatan)
 -- ==================================================
-local ASSET_ID = Settings.AssetID
-Services.ContentProvider:PreloadAsync({ASSET_ID})
+local ASSET_ID = "rbxassetid://76546975138681" -- Logo Sukri Hub
+pcall(function() Services.ContentProvider:PreloadAsync({ASSET_ID}) end)
 
 local ToggleScreenGui = Instance.new("ScreenGui")
 ToggleScreenGui.Name = "ToggleGUI"
@@ -48,13 +52,14 @@ ToggleScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ToggleScreenGui.Parent = GuiParent
 
 local Toggle = Instance.new("ImageButton")
-Toggle.Name = "Y"
+Toggle.Name = "SukriToggle"
 Toggle.Size = UDim2.new(0, 55, 0, 55)
 Toggle.Position = UDim2.new(0.02, 0, 0.5, -27.5)
-Toggle.BackgroundColor3 = Color3.fromRGB(20, 20, 30)
+Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
 Toggle.BackgroundTransparency = 0
 Toggle.Image = ASSET_ID
+Toggle.ScaleType = Enum.ScaleType.Crop
 Toggle.ZIndex = 999
 Toggle.Parent = ToggleScreenGui
 
@@ -63,16 +68,15 @@ ToggleCorner.CornerRadius = UDim.new(1, 0)
 ToggleCorner.Parent = Toggle
 
 local ToggleStroke = Instance.new("UIStroke")
-ToggleStroke.Color = Color3.fromRGB(200, 200, 220)
-ToggleStroke.Thickness = 1.5
-ToggleStroke.Transparency = 0.2
+ToggleStroke.Color = Color3.fromRGB(170, 0, 255) -- Aksen Ungu Sukri Hub
+ToggleStroke.Thickness = 2
 ToggleStroke.Parent = Toggle
 
 -- ==================================================
 -- MAIN UI
 -- ==================================================
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "YOKUDO_HUB"
+ScreenGui.Name = "SUKRI_HUB"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
@@ -81,21 +85,21 @@ ScreenGui.Parent = GuiParent
 
 local Main = Instance.new("Frame")
 Main.Name = "Main"
-Main.Size = UDim2.new(0, Settings.UI.Width, 0, Settings.UI.Height)
-Main.Position = UDim2.new(0.5, -Settings.UI.Width / 2, 0.5, -Settings.UI.Height / 2)
-Main.BackgroundColor3 = Theme.Background
+Main.Size = UDim2.new(0, UIWidth, 0, UIHeight)
+Main.Position = UDim2.new(0.5, -UIWidth / 2, 0.5, -UIHeight / 2)
+Main.BackgroundColor3 = Color3.fromRGB(15, 15, 18) -- Background Gelap/Hitam
 Main.BorderSizePixel = 0
 Main.ClipsDescendants = true
 Main.Active = true
 Main.Parent = ScreenGui
 
 local MainCorner = Instance.new("UICorner")
-MainCorner.CornerRadius = UDim.new(0, 0)
+MainCorner.CornerRadius = UDim.new(0, 6)
 MainCorner.Parent = Main
 
 local MainBorder = Instance.new("UIStroke")
-MainBorder.Color = Color3.fromRGB(200, 200, 220)
-MainBorder.Thickness = 2
+MainBorder.Color = Color3.fromRGB(170, 0, 255) -- Outline Ungu
+MainBorder.Thickness = 1.5
 MainBorder.Transparency = 0.1
 MainBorder.Parent = Main
 
@@ -105,7 +109,7 @@ MainBorder.Parent = Main
 local TopBar = Instance.new("Frame")
 TopBar.Name = "TopBar"
 TopBar.Size = UDim2.new(1, 0, 0, 58)
-TopBar.BackgroundColor3 = Theme.TopBar
+TopBar.BackgroundColor3 = Color3.fromRGB(10, 10, 12)
 TopBar.BorderSizePixel = 0
 TopBar.Active = true
 TopBar.ZIndex = 20
@@ -113,8 +117,8 @@ TopBar.Parent = Main
 
 local TopGradient = Instance.new("UIGradient")
 TopGradient.Color = ColorSequence.new({
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(36, 38, 53)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(22, 23, 30))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(20, 20, 25)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 12))
 })
 TopGradient.Parent = TopBar
 
@@ -122,7 +126,7 @@ local TopLine = Instance.new("Frame")
 TopLine.Name = "TopLine"
 TopLine.Size = UDim2.new(1, 0, 0, 2)
 TopLine.Position = UDim2.new(0, 0, 1, -2)
-TopLine.BackgroundColor3 = Color3.fromRGB(200, 200, 220)
+TopLine.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
 TopLine.BackgroundTransparency = 0.2
 TopLine.BorderSizePixel = 0
 TopLine.ZIndex = 22
@@ -130,38 +134,25 @@ TopLine.Parent = TopBar
 
 local Title = Instance.new("TextLabel")
 Title.Name = "Title"
-Title.Size = UDim2.new(1, -36, 0, 27)
-Title.Position = UDim2.new(0, 18, 0, 7)
+Title.Size = UDim2.new(1, -36, 1, -2)
+Title.Position = UDim2.new(0, 18, 0, 0)
 Title.BackgroundTransparency = 1
-Title.Text = Settings.Name
-Title.TextColor3 = Theme.Text
-Title.TextSize = 18
+Title.Text = "SUKRI HUB"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 20
 Title.TextXAlignment = Enum.TextXAlignment.Left
 Title.Font = Enum.Font.GothamBold
 Title.ZIndex = 21
 Title.Parent = TopBar
-
-local Subtitle = Instance.new("TextLabel")
-Subtitle.Name = "Subtitle"
-Subtitle.Size = UDim2.new(1, -36, 0, 18)
-Subtitle.Position = UDim2.new(0, 18, 0, 32)
-Subtitle.BackgroundTransparency = 1
-Subtitle.Text = Settings.Version
-Subtitle.TextColor3 = Theme.SubText
-Subtitle.TextSize = 10
-Subtitle.TextXAlignment = Enum.TextXAlignment.Left
-Subtitle.Font = Enum.Font.GothamMedium
-Subtitle.ZIndex = 21
-Subtitle.Parent = TopBar
 
 -- ==================================================
 -- SIDEBAR
 -- ==================================================
 local Sidebar = Instance.new("Frame")
 Sidebar.Name = "Sidebar"
-Sidebar.Size = UDim2.new(0, Settings.UI.SidebarWidth, 1, -58)
+Sidebar.Size = UDim2.new(0, SidebarWidth, 1, -58)
 Sidebar.Position = UDim2.new(0, 0, 0, 58)
-Sidebar.BackgroundColor3 = Theme.Sidebar
+Sidebar.BackgroundColor3 = Color3.fromRGB(12, 12, 15)
 Sidebar.BorderSizePixel = 0
 Sidebar.ZIndex = 5
 Sidebar.Parent = Main
@@ -170,7 +161,7 @@ local SidebarLine = Instance.new("Frame")
 SidebarLine.Name = "SidebarLine"
 SidebarLine.Size = UDim2.new(0, 2, 1, 0)
 SidebarLine.Position = UDim2.new(1, -2, 0, 0)
-SidebarLine.BackgroundColor3 = Color3.fromRGB(200, 200, 220)
+SidebarLine.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
 SidebarLine.BackgroundTransparency = 0.15
 SidebarLine.BorderSizePixel = 0
 SidebarLine.ZIndex = 6
@@ -207,24 +198,24 @@ TabList.Parent = TabScroll
 -- ==================================================
 local Content = Instance.new("Frame")
 Content.Name = "Content"
-Content.Size = UDim2.new(1, -Settings.UI.SidebarWidth, 1, -58)
-Content.Position = UDim2.new(0, Settings.UI.SidebarWidth, 0, 58)
-Content.BackgroundColor3 = Theme.Background
+Content.Size = UDim2.new(1, -SidebarWidth, 1, -58)
+Content.Position = UDim2.new(0, SidebarWidth, 0, 58)
+Content.BackgroundColor3 = Color3.fromRGB(15, 15, 18)
 Content.BorderSizePixel = 0
 Content.ZIndex = 5
 Content.Parent = Main
 
 -- ==================================================
--- EXPORT
+-- EXPORT VARIABLES
 -- ==================================================
-_G.YOKUDO_Main = Main
-_G.YOKUDO_TopBar = TopBar
-_G.YOKUDO_Sidebar = Sidebar
-_G.YOKUDO_TabScroll = TabScroll
-_G.YOKUDO_Content = Content
-_G.YOKUDO_ScreenGui = ScreenGui
-_G.YOKUDO_Toggle = Toggle
-_G.YOKUDO_GuiParent = GuiParent
+_G.SUKRI_Main = Main
+_G.SUKRI_TopBar = TopBar
+_G.SUKRI_Sidebar = Sidebar
+_G.SUKRI_TabScroll = TabScroll
+_G.SUKRI_Content = Content
+_G.SUKRI_ScreenGui = ScreenGui
+_G.SUKRI_Toggle = Toggle
+_G.SUKRI_GuiParent = GuiParent
 
 -- ==================================================
 -- DRAG SYSTEM (Main)
@@ -394,4 +385,5 @@ Toggle.MouseButton1Click:Connect(function()
     }):Play()
 end)
 
-print("✅ UI Loaded")
+print("✅ SUKRI HUB UI Loaded")
+
