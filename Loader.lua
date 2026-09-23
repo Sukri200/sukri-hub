@@ -1,45 +1,29 @@
--- ==================================================
--- FILE: Loader.lua
--- ==================================================
+local baseURL = "https://raw.githubusercontent.com/Sukri200/sukri-hub/main/"
 
--- GANTI URL INI DENGAN URL RAW GITHUB ANDA NANTI
-local baseURL = "local baseURL = "https://raw.githubusercontent.com/Sukri200/sukri-hub/main/"
-"
-
--- Fungsi pembantu untuk memanggil file
 local function RequireModule(path)
-    local success, result = pcall(function()
-        return loadstring(game:HttpGet(baseURL .. path, true))()
-    end)
-    
-    if not success then
-        warn("Gagal memuat modul: " .. path)
+    local url = baseURL .. path
+    local success, content = pcall(game.HttpGet, game, url)
+    if not success or not content or content == "404: Not Found" then
+        warn("❌ File tidak ditemukan / 404: " .. path)
         return nil
     end
-    return result
+    
+    local func, err = loadstring(content)
+    if not func then
+        warn("❌ Error sintaks pada " .. path .. ": " .. tostring(err))
+        return nil
+    end
+    return func()
 end
 
-print("⏳ Sedang memuat Yokudo Hub...")
-
--- 1. Panggil Modul
 local UI = RequireModule("UI.lua")
-local AntiTrap = RequireModule("Features/AntiTrap.lua")
+local AntiTrap = RequireModule("Fitur/AntiTrap.lua")
 
 if UI and AntiTrap then
-    -- 2. Buat Tampilan Utama
     UI.Init()
-    
-    -- 3. Buat Tombol dan hubungkan dengan Fitur AntiTrap
     UI.CreateToggleButton(function()
-        -- Saat tombol diklik, jalankan fungsi toggle di AntiTrap.lua
-        local statusSekarang = AntiTrap.Toggle() 
-        return statusSekarang -- Kembalikan nilai (true/false) agar UI bisa mengubah warna
+        return AntiTrap.Toggle()
     end)
-
-    -- 4. Export Global seperti di script awal Anda
     _G.YOKUDO_AntiTrap = AntiTrap
-
-    print("✅ Yokudo Hub (Modular) Loaded Successfully!")
-else
-    warn("❌ Gagal memuat script. Pastikan URL GitHub sudah benar.")
+    print("✅ Sukri Hub Berhasil Dimuat!")
 end
