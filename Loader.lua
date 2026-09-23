@@ -1,32 +1,32 @@
 --==================================================
--- YOKUDO HUB | STEAL AN EGG | Loader
+-- SUKRI HUB | STEAL AN EGG | Loader
 --==================================================
 
 local BASE_URL = "https://raw.githubusercontent.com/Sukri200/sukri-hub/main/"
 
-_G.YOKUDO_EnablePrint = false
+_G.SUKRI_EnablePrint = false
 
 local oldPrint = print
 print = function(...)
-    if _G.YOKUDO_EnablePrint then
+    if _G.SUKRI_EnablePrint then
         oldPrint(...)
     end
 end
 
-print("🔵 Loading YOKUDO HUB...")
+print("🔵 Loading SUKRI HUB...")
 
 --==================================================
 -- CACHE SYSTEM
 --==================================================
-_G.YOKUDO_Cache = _G.YOKUDO_Cache or {}
+_G.SUKRI_Cache = _G.SUKRI_Cache or {}
 
 local function GetScript(path)
     local fullPath = BASE_URL .. path
-    if _G.YOKUDO_Cache[fullPath] then
-        return _G.YOKUDO_Cache[fullPath]
+    if _G.SUKRI_Cache[fullPath] then
+        return _G.SUKRI_Cache[fullPath]
     end
     local script = game:HttpGet(fullPath)
-    _G.YOKUDO_Cache[fullPath] = script
+    _G.SUKRI_Cache[fullPath] = script
     return script
 end
 
@@ -77,7 +77,7 @@ local function CreateLoadingScreen()
     Title.Size = UDim2.new(1, -30, 0, 28)
     Title.Position = UDim2.new(0, 15, 0, 8)
     Title.BackgroundTransparency = 1
-    Title.Text = "YOKUDO HUB"
+    Title.Text = "SUKRI HUB"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Center
@@ -241,8 +241,8 @@ loadstring(GetScript("Tabs/Setting.lua"))()
 -- SELECT DEFAULT TAB
 --==================================================
 Loading.Update(92)
-if _G.YOKUDO_TabsManager then
-    _G.YOKUDO_TabsManager:SelectTabByName("Info")
+if _G.SUKRI_TabsManager then
+    _G.SUKRI_TabsManager:SelectTabByName("Info")
 end
 
 Loading.Update(95)
@@ -259,9 +259,9 @@ loadstring(GetScript("Features/BypassAntiCheat.lua"))()
 print("⏳ Waiting 2s before applying config...")
 task.wait(2)
 
-if _G.YOKUDO_ConfigSystem then
+if _G.SUKRI_ConfigSystem then
     print("🔧 Applying Config...")
-    _G.YOKUDO_ConfigSystem.Load()
+    _G.SUKRI_ConfigSystem.Load()
 end
 
 Loading.Update(100)
@@ -269,4 +269,4 @@ Loading.Update(100)
 task.wait(0.3)
 Loading.Destroy()
 print("✅ Loading Screen Closed!")
-print("🚀 YOKUDO HUB | Ready!")
+print("🚀 SUKRI HUB | Ready!")
