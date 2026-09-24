@@ -3,6 +3,7 @@
 -- រក Plot + Treadmill → Fly TP → Jump Out
 -- ✅ Fly ធម្មតា → Stop ភ្លាម → មិន Lock
 -- ✅ JumpOut រហូតដល់ Dist > 5
+-- ✅ Register ជាមួយ CharacterSystem
 -- ==================================================
 
 local Players = game:GetService("Players")
@@ -327,4 +328,29 @@ _G.YOKUDO_AFKSystem = {
     SAFE_ZONE = SAFE_ZONE,
 }
 
-print("✅ AFKSystem Feature Loaded (Fly Normal + Stop + Reset)")
+-- ==================================================
+-- REGISTER WITH CHARACTER SYSTEM
+-- ==================================================
+if _G.YOKUDO_CharacterSystem then
+    _G.YOKUDO_CharacterSystem:RegisterFeature({
+        Name = "AFKSystem",
+        Enable = EnableAFK,
+        Disable = DisableAFK,
+        IsEnabled = function() return AFKEnabled end,
+        OnCharacterAdded = function(Char, Hum, Root)
+            -- ✅ AFKSystem មិនត្រូវការ Re-Apply ពិសេស
+            -- ព្រោះវាប្រើ GetHumanoid() រាល់ពេល
+            if AFKEnabled then
+                task.wait(1)
+                pcall(function()
+                    -- Restart Distance Check
+                    if MyTreadmillPos then
+                        StartDistanceCheck()
+                    end
+                end)
+            end
+        end
+    })
+end
+
+print("✅ AFKSystem Feature Loaded (Fly Normal + Stop + Reset + Register)")
