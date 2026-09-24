@@ -1,40 +1,38 @@
--- ==================================================
--- YOKUDO HUB | STEAL AN EGG | Loader
--- ✅ Load CharacterSystem មុន Features
--- ✅ VIPTP ជំនួស EggCheckPremium
--- ==================================================
+--==================================================
+-- SUKRI HUB | STEAL AN EGG | Loader
+--==================================================
 
 local BASE_URL = "https://raw.githubusercontent.com/Sukri200/sukri-hub/main/"
 
-_G.YOKUDO_EnablePrint = false
+_G.SUKRI_EnablePrint = false
 
 local oldPrint = print
 print = function(...)
-    if _G.YOKUDO_EnablePrint then
+    if _G.SUKRI_EnablePrint then
         oldPrint(...)
     end
 end
 
-print("🔵 Loading YOKUDO HUB...")
+print("🔵 Loading SUKRI HUB...")
 
--- ==================================================
+--==================================================
 -- CACHE SYSTEM
--- ==================================================
-_G.YOKUDO_Cache = _G.YOKUDO_Cache or {}
+--==================================================
+_G.SUKRI_Cache = _G.SUKRI_Cache or {}
 
 local function GetScript(path)
     local fullPath = BASE_URL .. path
-    if _G.YOKUDO_Cache[fullPath] then
-        return _G.YOKUDO_Cache[fullPath]
+    if _G.SUKRI_Cache[fullPath] then
+        return _G.SUKRI_Cache[fullPath]
     end
     local script = game:HttpGet(fullPath)
-    _G.YOKUDO_Cache[fullPath] = script
+    _G.SUKRI_Cache[fullPath] = script
     return script
 end
 
--- ==================================================
+--==================================================
 -- WAIT UNTIL GAME IS LOADED
--- ==================================================
+--==================================================
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
 local Player = game.Players.LocalPlayer
@@ -42,9 +40,9 @@ local CoreGui = game:GetService("CoreGui")
 
 print("✅ Game loaded, Player: " .. Player.Name)
 
--- ==================================================
+--==================================================
 -- CREATE LOADING SCREEN
--- ==================================================
+--==================================================
 local function CreateLoadingScreen()
     local LoadingGui = Instance.new("ScreenGui")
     LoadingGui.Name = "LoadingScreen"
@@ -79,7 +77,7 @@ local function CreateLoadingScreen()
     Title.Size = UDim2.new(1, -30, 0, 28)
     Title.Position = UDim2.new(0, 15, 0, 8)
     Title.BackgroundTransparency = 1
-    Title.Text = "YOKUDO HUB"
+    Title.Text = "SUKRI HUB"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Center
@@ -151,15 +149,15 @@ local function CreateLoadingScreen()
     }
 end
 
--- ==================================================
+--==================================================
 -- CREATE LOADING SCREEN
--- ==================================================
+--==================================================
 local Loading = CreateLoadingScreen()
 Loading.Update(5)
 
--- ==================================================
+--==================================================
 -- LOAD CORE FILES
--- ==================================================
+--==================================================
 Loading.Update(10)
 loadstring(GetScript("Config.lua"))()
 
@@ -169,25 +167,15 @@ loadstring(GetScript("UI.lua"))()
 Loading.Update(20)
 loadstring(GetScript("Components.lua"))()
 
--- ==================================================
+--==================================================
 -- LOAD TABS MANAGER
--- ==================================================
+--==================================================
 Loading.Update(25)
 loadstring(GetScript("Tabs/Init.lua"))()
 
--- ==================================================
--- ✅ LOAD CHARACTER SYSTEM (មុន Features)
--- ==================================================
-Loading.Update(26)
---loadstring(GetScript("Features/CharacterSystem.lua"))()
-
-if _G.YOKUDO_CharacterSystem then
-    _G.YOKUDO_CharacterSystem:Init()
-end
-
--- ==================================================
+--==================================================
 -- LOAD FEATURES
--- ==================================================
+--==================================================
 Loading.Update(28)
 loadstring(GetScript("Features/AntiAFK.lua"))()
 
@@ -212,10 +200,6 @@ loadstring(GetScript("Features/AutoAttack.lua"))()
 Loading.Update(48)
 loadstring(GetScript("Features/AFKSystem.lua"))()
 
--- ✅ VIPTP (AFK Farm Only) — ជំនួស EggCheckPremium
-Loading.Update(50)
-loadstring(GetScript("Features/VIPTP.lua"))()
-
 Loading.Update(51)
 loadstring(GetScript("Features/AttackDrone.lua"))()
 
@@ -225,17 +209,13 @@ loadstring(GetScript("Features/ManagerDrone.lua"))()
 Loading.Update(57)
 loadstring(GetScript("Features/ManualFastClick.lua"))()
 
--- ✅ FarmingManager (ប្រើ VIPTP + EggCheck Logic ខាងក្នុង)
+-- ✅ ConfigSystem (Load After Features, Before Tabs)
 Loading.Update(59)
-loadstring(GetScript("Features/FarmingManager.lua"))()
-
--- ✅ ConfigSystem
-Loading.Update(60)
 loadstring(GetScript("Features/ConfigSystem.lua"))()
 
--- ==================================================
+--==================================================
 -- LOAD TABS
--- ==================================================
+--==================================================
 Loading.Update(62)
 loadstring(GetScript("Tabs/Info.lua"))()
 
@@ -257,31 +237,31 @@ loadstring(GetScript("Tabs/HopServer.lua"))()
 Loading.Update(90)
 loadstring(GetScript("Tabs/Setting.lua"))()
 
--- ==================================================
+--==================================================
 -- SELECT DEFAULT TAB
--- ==================================================
+--==================================================
 Loading.Update(92)
-if _G.YOKUDO_TabsManager then
-    _G.YOKUDO_TabsManager:SelectTabByName("Info")
+if _G.SUKRI_TabsManager then
+    _G.SUKRI_TabsManager:SelectTabByName("Info")
 end
 
 Loading.Update(95)
 
--- ==================================================
+--==================================================
 -- LOAD ANTI CHEAT
--- ==================================================
+--==================================================
 Loading.Update(98)
 loadstring(GetScript("Features/BypassAntiCheat.lua"))()
 
--- ==================================================
+--==================================================
 -- ✅ WAIT 2 SECONDS THEN APPLY CONFIG
--- ==================================================
+--==================================================
 print("⏳ Waiting 2s before applying config...")
 task.wait(2)
 
-if _G.YOKUDO_ConfigSystem then
+if _G.SUKRI_ConfigSystem then
     print("🔧 Applying Config...")
-    _G.YOKUDO_ConfigSystem.Load()
+    _G.SUKRI_ConfigSystem.Load()
 end
 
 Loading.Update(100)
@@ -289,4 +269,4 @@ Loading.Update(100)
 task.wait(0.3)
 Loading.Destroy()
 print("✅ Loading Screen Closed!")
-print("🚀 YOKUDO HUB | Ready!")
+print("🚀 SUKRI HUB | Ready!")
