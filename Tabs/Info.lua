@@ -1,5 +1,5 @@
 --==================================================
--- YOKUDO HUB | TAB | Info
+-- SUKRI HUB | TAB | Info
 --==================================================
 
 local TabsManager = _G.YOKUDO_TabsManager
@@ -10,7 +10,7 @@ local InfoTab, InfoPage = TabsManager:RegisterTab("Info", 1, "INFO")
 --==================================================
 -- INFO CONTENT
 --==================================================
-CreateSectionTitle(InfoPage, "YOKUDO HUB | Steal An Egg", 1)
+CreateSectionTitle(InfoPage, "SUKRI HUB | STEAL AN EGG", 1)
 
 --==================================================
 -- TITLE: Join Group For Notification Update Script
@@ -47,7 +47,7 @@ local LinkBtn = Instance.new("TextButton")
 LinkBtn.Size = UDim2.new(1, 0, 0, 30)
 LinkBtn.BackgroundColor3 = Color3.fromRGB(28, 29, 42)
 LinkBtn.BorderSizePixel = 0
-LinkBtn.Text = "Link : https://discord.gg/aKeK6avatS"
+LinkBtn.Text = "Link : https://discord.gg/WcAsGwudCc"
 LinkBtn.TextColor3 = Color3.fromRGB(120, 180, 255)
 LinkBtn.TextSize = 12
 LinkBtn.TextXAlignment = Enum.TextXAlignment.Left
@@ -99,7 +99,7 @@ CopyStroke.Parent = CopyBtn
 -- ==================================================
 -- COPY FUNCTION
 -- ==================================================
-local DISCORD_LINK = "https://discord.gg/aKeK6avatS"
+local DISCORD_LINK = "https://discord.gg/WcAsGwudCc"
 
 local function CopyDiscord()
     local Success = pcall(function()
@@ -115,7 +115,7 @@ local function CopyDiscord()
             CopyBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
         end)
 
-        print("[YOKUDO] Discord Link Copied: " .. DISCORD_LINK)
+        print("[SUKRI] Discord Link Copied: " .. DISCORD_LINK)
     else
         CopyBtn.Text = "FAILED!"
         CopyBtn.BackgroundColor3 = Color3.fromRGB(200, 60, 60)
@@ -125,7 +125,7 @@ local function CopyDiscord()
             CopyBtn.BackgroundColor3 = Color3.fromRGB(88, 101, 242)
         end)
 
-        warn("[YOKUDO] Failed to copy Discord link")
+        warn("[SUKRI] Failed to copy Discord link")
     end
 end
 
