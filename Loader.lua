@@ -1,34 +1,34 @@
 -- ==================================================
--- SUKRI HUB | STEAL AN EGG | Loader
+-- YOKUDO HUB | STEAL AN EGG | Loader
 -- ✅ Load CharacterSystem មុន Features
 -- ✅ VIPTP ជំនួស EggCheckPremium
 -- ==================================================
 
 local BASE_URL = "https://raw.githubusercontent.com/Sukri200/sukri-hub/main/"
 
-_G.SUKRI_EnablePrint = false
+_G.YOKUDO_EnablePrint = false
 
 local oldPrint = print
 print = function(...)
-    if _G.SUKRI_EnablePrint then
+    if _G.YOKUDO_EnablePrint then
         oldPrint(...)
     end
 end
 
-print("🔵 Loading SUKRI HUB...")
+print("🔵 Loading YOKUDO HUB...")
 
 -- ==================================================
 -- CACHE SYSTEM
 -- ==================================================
-_G.SUKRI_Cache = _G.SUKRI_Cache or {}
+_G.YOKUDO_Cache = _G.YOKUDO_Cache or {}
 
 local function GetScript(path)
     local fullPath = BASE_URL .. path
-    if _G.SUKRI_Cache[fullPath] then
-        return _G.SUKRI_Cache[fullPath]
+    if _G.YOKUDO_Cache[fullPath] then
+        return _G.YOKUDO_Cache[fullPath]
     end
     local script = game:HttpGet(fullPath)
-    _G.SUKRI_Cache[fullPath] = script
+    _G.YOKUDO_Cache[fullPath] = script
     return script
 end
 
@@ -79,7 +79,7 @@ local function CreateLoadingScreen()
     Title.Size = UDim2.new(1, -30, 0, 28)
     Title.Position = UDim2.new(0, 15, 0, 8)
     Title.BackgroundTransparency = 1
-    Title.Text = "SUKRI HUB"
+    Title.Text = "YOKUDO HUB"
     Title.TextColor3 = Color3.fromRGB(255, 255, 255)
     Title.TextSize = 20
     Title.TextXAlignment = Enum.TextXAlignment.Center
@@ -179,10 +179,10 @@ loadstring(GetScript("Tabs/Init.lua"))()
 -- ✅ LOAD CHARACTER SYSTEM (មុន Features)
 -- ==================================================
 Loading.Update(26)
-loadstring(GetScript("Features/CharacterSystem.lua"))()
+--loadstring(GetScript("Features/CharacterSystem.lua"))()
 
-if _G.SUKRI_CharacterSystem then
-    _G.SUKRI_CharacterSystem:Init()
+if _G.YOKUDO_CharacterSystem then
+    _G.YOKUDO_CharacterSystem:Init()
 end
 
 -- ==================================================
@@ -261,8 +261,8 @@ loadstring(GetScript("Tabs/Setting.lua"))()
 -- SELECT DEFAULT TAB
 -- ==================================================
 Loading.Update(92)
-if _G.SUKRI_TabsManager then
-    _G.SUKRI_TabsManager:SelectTabByName("Info")
+if _G.YOKUDO_TabsManager then
+    _G.YOKUDO_TabsManager:SelectTabByName("Info")
 end
 
 Loading.Update(95)
@@ -279,9 +279,9 @@ loadstring(GetScript("Features/BypassAntiCheat.lua"))()
 print("⏳ Waiting 2s before applying config...")
 task.wait(2)
 
-if _G.SUKRI_ConfigSystem then
+if _G.YOKUDO_ConfigSystem then
     print("🔧 Applying Config...")
-    _G.SUKRI_ConfigSystem.Load()
+    _G.YOKUDO_ConfigSystem.Load()
 end
 
 Loading.Update(100)
@@ -289,4 +289,4 @@ Loading.Update(100)
 task.wait(0.3)
 Loading.Destroy()
 print("✅ Loading Screen Closed!")
-print("🚀 SUKRI HUB | Ready!")
+print("🚀 YOKUDO HUB | Ready!")
