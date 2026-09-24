@@ -4,7 +4,7 @@
 -- ✅ Logic ចាស់ទាំងស្រុង — InitialFlyAndStartLoop (Signed X)
 -- ✅ Fly TP មិន Lock + Stop ភ្លាម + Reset CFrame
 -- ✅ Lock CFrame តែពេល Follow Mob
--- ✅ Restart ពេល Character Added
+-- ✅ Register ជាមួយ CharacterSystem
 -- ==================================================
 
 local Players = game:GetService("Players")
@@ -31,7 +31,6 @@ local ARRIVE_TIMEOUT = 15
 local CONTAINER_NAME = "ScrambleLocalVisuals"
 local SEARCH_PREFIXES = { "DroneVisual_", "PersonalDrone_" }
 
--- Tier Priority
 local TIER_PRIORITY = {
     ["AugmentedDrone"] = 1,
     ["ReactorDrone"] = 2,
@@ -59,7 +58,6 @@ local CurrentSpawnIndex = 1
 local IsFlying = false
 local SpawnLoopRunning = false
 
--- Live Saved Stats
 local SavedStats = {
     WalkSpeed = nil,
     JumpPower = nil,
@@ -68,9 +66,6 @@ local SavedStats = {
     Humanoid = nil,
 }
 
--- ==================================================
--- FORWARD DECLARATIONS
--- ==================================================
 local StartFollow
 local FlyTPToPosition
 local StartAttackLoop
@@ -289,7 +284,7 @@ local function GetBehindPosition(Target)
 end
 
 -- ==================================================
--- START LOCK (តែពេល Follow Mob)
+-- START LOCK
 -- ==================================================
 local function StartLock(Position, LookAt)
     LockCFrame = CFrame.new(Position, LookAt or (Position + Vector3.new(0, 0, -1)))
@@ -318,7 +313,7 @@ local function StartLock(Position, LookAt)
 end
 
 -- ==================================================
--- FOLLOW BEHIND (✅ Stop + Wait + Reset CFrame)
+-- FOLLOW BEHIND
 -- ==================================================
 function StartFollow()
     CleanupMovers()
@@ -385,7 +380,7 @@ function StartFollow()
 end
 
 -- ==================================================
--- FLY TP TO POSITION (✅ Stop + Wait + Reset CFrame)
+-- FLY TP TO POSITION
 -- ==================================================
 function FlyTPToPosition(Destination, Callback)
     CleanupMovers()
@@ -600,7 +595,7 @@ function StartAttackLoop()
 end
 
 -- ==================================================
--- ✅ INITIAL FLY (Logic ចាស់ — Signed X Distance)
+-- INITIAL FLY (Logic ចាស់ — Signed X Distance)
 -- ==================================================
 function InitialFlyAndStartLoop()
     local Hum, Root = GetHumanoid()
@@ -642,7 +637,7 @@ function InitialFlyAndStartLoop()
 end
 
 -- ==================================================
--- START / STOP (✅ Logic ចាស់ — InitialFlyAndStartLoop)
+-- START / STOP
 -- ==================================================
 local function StartAttack()
     if AttackDroneEnabled then return end
@@ -656,7 +651,6 @@ local function StartAttack()
 
     StartAttackLoop()
 
-    -- ✅ Logic ចាស់ទាំងស្រុង — InitialFlyAndStartLoop ដោយផ្ទាល់
     print("[AttackDrone] Attack Drone: ON (Initial Fly Logic — Signed X)")
 
     task.spawn(function()
@@ -695,35 +689,6 @@ local function StopAttackDrone()
 end
 
 -- ==================================================
--- AUTO RE-APPLY ON CHARACTER ADDED (✅ Restart)
--- ==================================================
-Player.CharacterAdded:Connect(function(Char)
-    if AttackDroneEnabled then
-        print("[AttackDrone] Character Added → Restarting...")
-        task.wait(1)
-
-        CleanupMovers()
-        CurrentTarget = nil
-        CurrentTargetPriority = nil
-        CurrentSpawnIndex = 1
-        IsFlying = false
-        SpawnLoopRunning = false
-        LastFire = 0
-        TraceSequence = 0
-
-        SaveLiveStats()
-
-        StartAttackLoop()
-
-        task.spawn(function()
-            InitialFlyAndStartLoop()
-        end)
-
-        print("[AttackDrone] ✅ Re-applied on new Character")
-    end
-end)
-
--- ==================================================
 -- EXPORT
 -- ==================================================
 _G.YOKUDO_AttackDrone = {
@@ -752,4 +717,36 @@ _G.YOKUDO_AttackDrone = {
     FOLLOW_SPEED = FOLLOW_SPEED
 }
 
-print("✅ AttackDrone Feature Loaded (Logic ចាស់ទាំងស្រុង)")
+-- ==================================================
+-- REGISTER WITH CHARACTER SYSTEM
+-- ==================================================
+if _G.YOKUDO_CharacterSystem then
+    _G.YOKUDO_CharacterSystem:RegisterFeature({
+        Name = "AttackDrone",
+        Enable = StartAttack,
+        Disable = StopAttackDrone,
+        IsEnabled = function() return AttackDroneEnabled end,
+        OnCharacterAdded = function(Char, Hum, Root)
+            if AttackDroneEnabled then
+                task.wait(1)
+                CleanupMovers()
+                CurrentTarget = nil
+                CurrentTargetPriority = nil
+                CurrentSpawnIndex = 1
+                IsFlying = false
+                SpawnLoopRunning = false
+                LastFire = 0
+                TraceSequence = 0
+
+                SaveLiveStats()
+                StartAttackLoop()
+
+                task.spawn(function()
+                    InitialFlyAndStartLoop()
+                end)
+            end
+        end
+    })
+end
+
+print("✅ AttackDrone Feature Loaded (Logic ចាស់ទាំងស្រុង + Register)")
